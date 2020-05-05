@@ -1,0 +1,4 @@
+irregular_states = [
+	{},
+	{}
+]
