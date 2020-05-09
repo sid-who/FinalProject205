@@ -10,32 +10,32 @@ from borders import borders
 color_dictionary= {
     ##"AL" : "#FF5733"
         'AK': '#FF5733',
-        'AL': '#FF5733',
+        'AL': '#286ECE',
         'AR': '#FF5733',
-        'AZ': '#FF5733',
+        'AZ': '#286ECE',
         'CA': '#FF5733',
-        'CO': '#FF5733',
+        'CO': '#286ECE',
         'CT': '#FF5733',
-        'DC': '#FF5733',
+        'DC': '#286ECE',
         'DE': '#FF5733',
-        'FL': '#FF5733',
+        'FL': '#286ECE',
         'GA': '#FF5733',
-        'GU': '#FF5733',
+        'GU': '#286ECE',
         'HI': '#FF5733',
-        'IA': '#FF5733',
+        'IA': '#286ECE',
         'ID': '#FF5733',
-        'IL': '#FF5733',
+        'IL': '#286ECE',
         'IN': '#FF5733',
         'KS': '#FF5733',
-        'KY': '#FF5733',
+        'KY': '#286ECE',
         'LA': '#FF5733',
-        'MA': '#FF5733',
+        'MA': '#286ECE',
         'MD': '#FF5733',
-        'ME': '#FF5733',
+        'ME': '#286ECE',
         'MI': '#FF5733',
-        'MN': '#FF5733',
+        'MN': '#286ECE',
         'MO': '#FF5733',
-        'MS': '#FF5733',
+        'MS': '#286ECE',
         'MT': '#FF5733',
         'NA': '#FF5733',
         'NC': '#FF5733',
@@ -74,7 +74,8 @@ bootstrap = Bootstrap(app)
 
 @app.route('/')
 def home():
-    print(population)
+    #print(population)
+    print(borders)
     return render_template('home.html', states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders)
 
 @app.route('/states/<state_id>')

@@ -6,26 +6,18 @@
   </head>
   <body>
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  <center>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="958" height="602">
       <title></title>
     <defs>
     <style type="text/css">
-                         /* default color for all states not specified below */
-    .borders {stroke:#FFFFFF; stroke-width:1}    /* color and width of borders between states */
-    .DCcircle {opacity:1}                        /* set opacity to 0 to hide the DC circle, or 1 to show it */
-    .separator {stroke:#B0B0B0; stroke-width:2}  /* color and width of lines around Alaska and Hawaii */
-    /*.state:hover {fill:#A9A9A9}*/
-
-    /* Individual states and territories can be colored as follows:
-    #KS, #MT, #PA {fill:#0000FF}
-    #CA, #TN {fill:#FF0000}
-    In this example, Kansas, Montana and Pennsylvania are colored blue, and California and Tennessee are colored red.
-    Place this code in the empty space below. */
-
-
-
+    .borders {stroke:#FFFFFF; stroke-width:1}
+    .DCcircle {opacity:1}
+    .separator {stroke:#B0B0B0; stroke-width:2}
     </style>
     </defs>
+
+
 
     <g transform="translate(-32)">
 
@@ -36,7 +28,7 @@
     </g>
 
     {% for border in borders %}
-        <path class="{{ border['id'] }}" fill="{{ colors[border['id']] }}">
+        <path class="{{ border['id'] }}" fill="{{ colors[border['id']] }}" d="{{ border['coords'] }}"/>
     {% endfor %}
 
 
@@ -49,6 +41,7 @@
 
     </g>
     </svg>
+</center>
 
   </body>
 </html>
