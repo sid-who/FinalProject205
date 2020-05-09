@@ -4,6 +4,8 @@ from PIL import Image
 from states_coordinates import states_coordinates
 from states_names import states_names
 from population_module import population
+from covid_count import cases_by_state
+from borders import borders
 
 color_dictionary= {
     ##"AL" : "#FF5733"
@@ -73,7 +75,7 @@ bootstrap = Bootstrap(app)
 @app.route('/')
 def home():
     print(population)
-    return render_template('home.html', states = states_coordinates, colors = color_dictionary, statesNames = states_names)
+    return render_template('home.html', states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders)
 
 @app.route('/states/<state_id>')
 def states_detail(state_id):

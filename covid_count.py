@@ -14,5 +14,4 @@ covid_dict = requests.json()
 
 cases_by_state = covid_dict['casesByState']
 
-print(cases_by_state)
 
