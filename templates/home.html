@@ -10,7 +10,7 @@
       <title></title>
     <defs>
     <style type="text/css">
-    .state {fill:#D0D0D0}                        /* default color for all states not specified below */
+                         /* default color for all states not specified below */
     .borders {stroke:#FFFFFF; stroke-width:1}    /* color and width of borders between states */
     .DCcircle {opacity:1}                        /* set opacity to 0 to hide the DC circle, or 1 to show it */
     .separator {stroke:#B0B0B0; stroke-width:2}  /* color and width of lines around Alaska and Hawaii */
@@ -31,7 +31,7 @@
 
     <g class="state">
       {% for state in states %}
-        <a href="{{ url_for('states_detail', state_id = state['id']) }}"> <path id="{{state['id']}}" fill="{{ colors[state['id']] }}" d="{{ state['coords'] }}"></a>
+        <a href="{{ url_for('states_detail', state_id = statesNames[state['id']]) }}"> <path id="{{state['id']}}" fill="{{ colors[state['id']] }}" d="{{ state['coords'] }}"></a>
       {% endfor %}
     </g>
 

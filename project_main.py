@@ -2,6 +2,8 @@ from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from PIL import Image
 from states_coordinates import states_coordinates
+from states_names import states_names
+from population_module import population
 
 color_dictionary= {
     ##"AL" : "#FF5733"
@@ -70,7 +72,8 @@ bootstrap = Bootstrap(app)
 
 @app.route('/')
 def home():
-    return render_template('home.html', states = states_coordinates, colors = color_dictionary)
+    print(population)
+    return render_template('home.html', states = states_coordinates, colors = color_dictionary, statesNames = states_names)
 
 @app.route('/states/<state_id>')
 def states_detail(state_id):
