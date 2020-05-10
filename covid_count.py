@@ -14,5 +14,16 @@ covid_dict = requests.json()
 
 cases_by_state = covid_dict['casesByState']
 
-print(cases_by_state)
+#print(cases_by_state)
 
+parsed_covid_data = {}
+
+for i in range(len(cases_by_state)):
+	#print(cases_by_state[i]['name'])
+	parsed_covid_data[cases_by_state[i]['name']] = {
+		'range' : cases_by_state[i]['range'],
+		'casesReported' : cases_by_state[i]['casesReported'],
+		'communityTransmission' : cases_by_state[i]['communityTransmission']
+	}
+
+print(parsed_covid_data)
