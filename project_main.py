@@ -91,7 +91,7 @@ color_cases = {}
 for state, color in zip(state_case_names, colorCase):
     color_cases[state] = color
 
-print(state_case_names)
+#print(state_case_names)
 
 color_cases['borders'] = 'none'
 
@@ -104,29 +104,56 @@ modRecoveries = {}
 for i in DetailedCovidData:
     modRecoveries[i] = DetailedCovidData[i]['recovered']
 
+for i in modRecoveries:
+    if(modRecoveries[i] == None):
+        modRecoveries[i] = -1
+
+modRecoveries = {k: v for k, v in sorted(modRecoveries.items(), key=lambda x: x[1])}
+
 recv_state_names = []
 colorRec = linear_gradient((118, 182, 241), (2, 45, 86), 60)
 
+for value in modRecoveries:
+    recv_state_names.append(value)
+
 color_recovered = {}
+
+for state, color in zip(recv_state_names, colorRec):
+    if(modRecoveries[state] == -1):
+        color_recovered[state] = '#f7bd72'
+    else:
+        color_recovered[state] = color
+
+color_recovered['borders'] = 'none'
 ## End Recovered
 
+## ------------------------------------------------------------------------------------- ##
 
+## Deaths
+modDeath = {}
+for i in DetailedCovidData:
+    modDeath[i] = DetailedCovidData[i]['death']
+
+modDeath = {k: v for k, v in sorted(modDeath.items(), key=lambda x: x[1])}
+
+death_state_names = []
+colorDeath = linear_gradient((247, 152, 227), (147, 2, 116), 60)
+
+for value in modDeath:
+    death_state_names.append(value)
 
 color_deaths = {}
 
+for state, color in zip(death_state_names, colorDeath):
+    color_deaths[state] = color
 
+color_deaths['borders'] = 'none'
 
+print(color_deaths)
 
+## End Deaths
 
-#color_dictionary = linear_gradient((207,245,199), (22,89,9), 60)
-
-
-
-# print(color_test)
-
-# print(sorted(population.values()))
-
-# print(population)
+## ------------------------------------------------------------------------------------- ##
 
 o30orMore = []
 o25to30 = []
@@ -220,11 +247,11 @@ def covid_map():
 
 @app.route('/recoveries')
 def recoveries():
-    return render_template('recovery_map.html')
+    return render_template('recovery_map.html', states = states_coordinates, colors = color_recovered, statesNames = states_names, borders = borders, irregstates = irregular_states)
 
 @app.route('/deaths')
 def deaths():
-    return render_template('death_map.html')
+    return render_template('death_map.html', states = states_coordinates, colors = color_deaths, statesNames = states_names, borders = borders, irregstates = irregular_states)
 
 @app.route('/mysterymap')
 def mysteries():

@@ -33,11 +33,11 @@
 
     <g class="state">
       {% for state in states %}
-        <a href="{{ url_for('states_detail', state_id = statesNames[state['id']]) }}"> <path id="{{state['id']}}" fill="{{ colors[statesNames[state['id']]] }}" d="{{ state['coords'] }}"></a>
+        <a href="{{ url_for('states_detail', state_id = statesNames[state['id']]) }}"> <path id="{{state['id']}}" fill="{{ colors[state['id']] }}" d="{{ state['coords'] }}"></a>
       {% endfor %}
 
       {% for istate in irregstates %}
-        <a href="{{ url_for('states_detail', state_id = statesNames[istate['id']]) }}"> <path id="{{ istate['id'] }}" fill="{{ colors[statesNames[istate['id']]] }}" transform=" {{ istate['transform'] }}" d="{{ istate['coords'] }}"> </a>
+        <a href="{{ url_for('states_detail', state_id = statesNames[istate['id']]) }}"> <path id="{{ istate['id'] }}" fill="{{ colors[istate['id']] }}" transform=" {{ istate['transform'] }}" d="{{ istate['coords'] }}"> </a>
       {% endfor %}
 
     </g>
