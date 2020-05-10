@@ -12,7 +12,6 @@ from numpy import random as rnd
 import colorsys
 
 
-
 def get_color_spread(N):
     HSV_tuples = [(x * 3.0 / N, 0.5, 0.5) for x in range(N)]
     hex_out = []
@@ -21,10 +20,10 @@ def get_color_spread(N):
         hex_out.append('#%02x%02x%02x' % tuple(rgb))
     return hex_out
 
-states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 
-          'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 
-          'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 
-          'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 
+states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
+          'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+          'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+          'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
           'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
 
@@ -41,7 +40,7 @@ def linear_gradient(start_tuple, end_tuple, n):
             for j in range(3)
         ]
         RGB_List.append(curr_vector)
-    
+
     for i in range(len(RGB_List)):
         red = RGB_List[i][0]
         green = RGB_List[i][1]
@@ -80,7 +79,7 @@ for i in parsed_covid_data:
 state_case_names = []
 colorCase = linear_gradient((250,197,197), (101,2,2), 60)
 
-modCases.pop('Jurisdiction')
+#modCases.pop('Jurisdiction')
 
 modCases = {k: v for k, v in sorted(modCases.items(), key=lambda x: x[1])}
 
@@ -206,7 +205,8 @@ bootstrap = Bootstrap(app)
 def home():
     #print(population)
     #print(borders)
-    return render_template('home.html', states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders, irregstates = irregular_states)
+    1
+    return render_template('home.html', title = "The R0na Tracker", states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders, irregstates = irregular_states)
 
 @app.route('/states/<state_id>')
 def states_detail(state_id):

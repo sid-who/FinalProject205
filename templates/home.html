@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Home - Page</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{{title}}</title>
     <nav>
       <div class="topnav">
         <a class="active" href="{{ url_for('home') }}">Population</a>
@@ -15,6 +17,7 @@
     </nav>
   </head>
   <body style="background-color:#000000">
+    <div class="wrapper">
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <br><br><br><br>
   <center>
@@ -60,6 +63,6 @@
     </g>
     </svg>
 </center>
-
+</div>
   </body>
 </html>
