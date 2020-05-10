@@ -3,9 +3,20 @@
   <head>
     <meta charset="utf-8">
     <title>Home - Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <nav>
+      <div class="topnav">
+        <a class="active" href="{{ url_for('home') }}">Population</a>
+        <a href="{{ url_for('covid_map') }}">Cases</a>
+        <a href="{{ url_for('recoveries') }}">Recovered</a>
+        <a href="{{ url_for('deaths') }}">Deaths</a>
+        <a href="{{ url_for('mysteries') }}">???</a>
+      </div>
+    </nav>
   </head>
-  <body>
+  <body style="background-color:#000000">
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <br><br><br><br>
   <center>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="958" height="602">
       <title></title>
@@ -23,8 +34,13 @@
 
     <g class="state">
       {% for state in states %}
-        <a href="{{ url_for('states_detail', state_id = statesNames[state['id']]) }}"> <path id="{{state['id']}}" fill="{{ colors[state['id']] }}" d="{{ state['coords'] }}"></a>
+        <a href="{{ url_for('states_detail', state_id = statesNames[state['id']]) }}"> <path id="{{state['id']}}" fill="{{ colors[statesNames[state['id']]] }}" d="{{ state['coords'] }}"></a>
       {% endfor %}
+
+      {% for istate in irregstates %}
+        <a href="{{ url_for('states_detail', state_id = statesNames[istate['id']]) }}"> <path id="{{ istate['id'] }}" fill="{{ colors[statesNames[istate['id']]] }}" transform=" {{ istate['transform'] }}" d="{{ istate['coords'] }}"> </a>
+      {% endfor %}
+
     </g>
 
     {% for border in borders %}
@@ -33,9 +49,11 @@
 
 
 
-    <circle class="state borders DCcircle" id="DC" cx="858.5" cy="257.9" r="5">
+
+
+    <!-- <circle class="state borders DCcircle" id="DC" cx="858.5" cy="257.9" r="5">
       <title>District of Columbia</title>
-    </circle>
+    </circle> -->
 
     <path class="separator" fill="none" d="m 0,440 205,0 220,105 0,65 m -150,-136.59 0,61.59 80,75"/>
 

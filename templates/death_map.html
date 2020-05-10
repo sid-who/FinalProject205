@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <nav>
+      <div class="topnav">
+        <a href="{{ url_for('home') }}">Population</a>
+        <a href="{{ url_for('covid_map') }}">Cases</a>
+        <a href="{{ url_for('recoveries') }}">Recovered</a>
+        <a class="active" href="{{ url_for('deaths') }}">Deaths</a>
+        <a href="{{ url_for('mysteries') }}">???</a>
+      </div>
+    </nav>
+</head>
+<body>
+
+</body>
+</html>
