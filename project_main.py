@@ -5,13 +5,12 @@ from states_coordinates import states_coordinates
 from irregular_states import irregular_states
 from states_names import states_names
 from population_module import population
-from covid_count import cases_by_state
+from covid_count import parsed_covid_data
+from detailed_covid import DetailedCovidData
 from borders import borders
 from numpy import random as rnd
 import colorsys
 
-from flask_nav import Nav
-from flask_nav.elements import Navbar, View
 
 
 def get_color_spread(N):
@@ -22,36 +21,14 @@ def get_color_spread(N):
         hex_out.append('#%02x%02x%02x' % tuple(rgb))
     return hex_out
 
-#colorgrade = get_color_spread(100)
-
-# i = 0
-
 states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 
           'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 
           'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 
           'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 
           'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
-# color_test = {}
 
-# for state, color in zip(states, colorgrade):
-#     color_test[state] = color
-
-#color_dictionary = color_test
-
-sortPop = {k: v for k, v in sorted(population.items(), key=lambda x: x[1])}
-
-print(sortPop)
-
-states_pop_names_sorted = []
-
-for value in sortPop:
-    #print(value + " - " + str(sortPop[value]))
-    states_pop_names_sorted.append(value)
-print(states_pop_names_sorted)
-
-
-## ------------------ color maker for population map ----------------##
+## ------------------ color maker for all maps ----------------##
 
 def linear_gradient(start_tuple, end_tuple, n):
     RGB_List = [start_tuple]
@@ -73,6 +50,16 @@ def linear_gradient(start_tuple, end_tuple, n):
         converted_color = '#%02x%02x%02x' % color
         hex_list.append(converted_color)
     return hex_list
+## ------------------- end color maker --------------------------##
+
+
+## Population
+sortPop = {k: v for k, v in sorted(population.items(), key=lambda x: x[1])}
+states_pop_names_sorted = []
+
+for value in sortPop:
+    states_pop_names_sorted.append(value)
+#print(states_pop_names_sorted)
 
 colorgrade = linear_gradient((207,245,199), (2,77,5), 55)
 
@@ -82,6 +69,53 @@ for state, color in zip(states_pop_names_sorted, colorgrade):
     color_pop[state] = color
 
 color_dictionary = color_pop
+## End Population
+
+## ------------------------------------------------------------------------------------- ##
+
+## Cases
+modCases = {}
+for i in parsed_covid_data:
+    modCases[i] = parsed_covid_data[i]['casesReported']
+state_case_names = []
+colorCase = linear_gradient((250,197,197), (101,2,2), 60)
+
+modCases.pop('Jurisdiction')
+
+modCases = {k: v for k, v in sorted(modCases.items(), key=lambda x: x[1])}
+
+for value in modCases:
+    state_case_names.append(value)
+
+color_cases = {}
+
+for state, color in zip(state_case_names, colorCase):
+    color_cases[state] = color
+
+print(state_case_names)
+
+color_cases['borders'] = 'none'
+
+## End Cases
+
+## ------------------------------------------------------------------------------------- ##
+
+## Recovered
+modRecoveries = {}
+for i in DetailedCovidData:
+    modRecoveries[i] = DetailedCovidData[i]['recovered']
+
+recv_state_names = []
+colorRec = linear_gradient((118, 182, 241), (2, 45, 86), 60)
+
+color_recovered = {}
+## End Recovered
+
+
+
+color_deaths = {}
+
+
 
 
 
@@ -159,8 +193,8 @@ for state in population:
             pdict['o500to600'].append(state)
         else:
             pdict['under500'].append(state)
-for state in pdict:
-    print(state + " -> " + str(len(pdict[state])))
+# for state in pdict:
+#     print(state + " -> " + str(len(pdict[state])))
 
 #print(pdict)
 
@@ -182,7 +216,7 @@ def states_detail(state_id):
 
 @app.route('/covid_cases')
 def covid_map():
-    return render_template('covid_map.html')
+    return render_template('covid_map.html', states = states_coordinates, colors = color_cases, statesNames = states_names, borders = borders, irregstates = irregular_states)
 
 @app.route('/recoveries')
 def recoveries():

@@ -26,4 +26,4 @@ for i in range(len(cases_by_state)):
 		'communityTransmission' : cases_by_state[i]['communityTransmission']
 	}
 
-print(parsed_covid_data)
+#print(parsed_covid_data)

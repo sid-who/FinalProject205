@@ -14,14 +14,15 @@ detailed_covid_data = requests.json()
 
 #print(detailed_covid_data)
 
-parsedCovidData = []
+DetailedCovidData = {}
 
-print(detailed_covid_data[0]['state'])
+for i in range(len(detailed_covid_data)):
+	DetailedCovidData[detailed_covid_data[i]['state']] = {
+		'death': detailed_covid_data[i]['death'],
+		'recovered' : detailed_covid_data[i]['recovered'],
+		'negative' : detailed_covid_data[i]['negative'],
+		'hospitalized' : detailed_covid_data[i]['hospitalized']
+	}
 
-# for data in detailed_covid_data:
-# 	temp_dict = {}
-# 	temp_dict['state'] = detailed_covid_data[data['state']]
-# 	temp_dict['positive'] = detailed_covid_data[data['positive']]
-# 	temp_dict['death'] = detailed_covid_data[data['death']]
-# 	temp_dict['recovered'] = detailed_covid_data[data['recovered']]
-# 	parsedCovidData.append(temp_dict)
+
+#print(parsedCovidData)
