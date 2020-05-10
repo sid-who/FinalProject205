@@ -23,5 +23,5 @@ for i in range(len(pop_dict['data'])):
 
 #print(population)
 
-print(population)
+#print(population)
 
