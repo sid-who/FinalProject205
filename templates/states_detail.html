@@ -5,6 +5,28 @@
     <title></title>
   </head>
   <body>
-    <h1>scaffolding</h1>
+    <h1>{{ state_info['id'] }}</h1>
+    <table>
+    	<tr>
+    		<td>Population</td>
+    		<td>{{ state_info['population'] }}</td>
+    	</tr>
+    	<tr>
+    		<td>Cases Reported</td>
+    		<td>{{ state_info['casesReported'] }}</td>
+    	</tr>
+    	<tr>
+    		<td>Recovered</td>
+    		{% if state_info['recovered'] != None %}
+    			<td>{{ state_info['recovered'] }}</td>
+    		{% else %}
+    			<td>Info Unavailable</td>
+    		{% endif %}
+    	</tr>
+    	<tr>
+    		<td>Deaths</td>
+    		<td>{{ state_info['death'] }}</td>
+    	</tr>
+    </table>
   </body>
 </html>

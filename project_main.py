@@ -9,6 +9,7 @@ from covid_count import parsed_covid_data
 from detailed_covid import DetailedCovidData
 from borders import borders
 from numpy import random as rnd
+from state_to_abbrv import abbr
 import colorsys
 
 
@@ -149,7 +150,7 @@ for state, color in zip(death_state_names, colorDeath):
 
 color_deaths['borders'] = 'none'
 
-print(color_deaths)
+#print(color_deaths)
 
 ## End Deaths
 
@@ -238,8 +239,15 @@ def home():
 @app.route('/states/<state_id>')
 def states_detail(state_id):
     #temp = color_dictionary['state_id']
+    #print(DetailedCovidData[abbr[state_id]])
 
-    return render_template('states_detail.html', colors = color_dictionary)
+    local_dictionary = {'id' : state_id, 'population' : population[state_id], 'recovered' : DetailedCovidData[abbr[state_id]]['recovered'], 'death' : DetailedCovidData[abbr[state_id]]['death'], 'casesReported' : parsed_covid_data[state_id]['casesReported']}
+
+    print(local_dictionary)
+
+
+
+    return render_template('states_detail.html', state_info = local_dictionary)
 
 @app.route('/covid_cases')
 def covid_map():
