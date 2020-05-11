@@ -1,3 +1,13 @@
+#
+# Code by Gurpreet Sidhu, Jose Perez, Cesar Borrego, and Justin Thon
+# File name: project_main.py
+# Date Created: 5/9/20
+# Python version 3.7
+# CST 205 - Multimedia Design & Programming
+# Purpose: API call which returns json about state population figures. Results
+#		   are reprocessed into a local dictionary.
+#
+
 import requests
 import urllib
 import json

@@ -1,5 +1,15 @@
 {% extends 'bootstrap/base.html' %}
 
+<!--#-->
+<!-- Code by Gurpreet Sidhu, Jose Perez, Cesar Borrego, and Justin Thon -->
+<!-- File name: states_detail.html -->
+<!-- Final Project -->
+<!-- Date Created: 5/9/20 -->
+<!-- HTML file -->
+<!-- CST 205 - Multimedia Design & Programming -->
+<!-- Purpose: HTML Template for displaying rona tracker map with corresponding data  -->
+<!--#-->
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 {% block content %}
@@ -42,6 +52,26 @@
   .push{
     padding-left: 50px;
   }
+  #population{
+    color:#6edb98;
+    font-size: 20px;
+  }
+  #cases{
+    color:#e85f5f;
+    font-size: 20px;
+  }
+  #recover{
+    color:#a5dcf0;
+    font-size: 20px;
+  }
+  #death{
+    color:#f0a5ee;
+    font-size: 20px;
+  }
+  #infected{
+    color:gray;
+    font-size:40px;
+  }
 </style>
 <div class="push">
  <div class="row">
@@ -50,25 +80,30 @@
     <div class="col-sm-4">
       <table>
       	<tr >
-      		<td>Population</td>
-      		<td class="push">{{ state_info['population'] }}</td>
+      		<td id="population">Population</td>
+      		<td class="push" id="population">{{ state_info['population'] }}</td>
       	</tr>
       	<tr>
-      		<td>Cases Reported</td>
-      		<td class="push">{{ state_info['casesReported'] }}</td>
+      		<td id="cases">Cases Reported</td>
+      		<td class="push" id="cases">{{ state_info['casesReported'] }}</td>
       	</tr>
       	<tr>
-      		<td>Recovered</td>
+      		<td id="recover">Recovered</td>
       		{% if state_info['recovered'] != None %}
-      			<td class="push">{{ state_info['recovered'] }}</td>
+      			<td class="push" id="recover">{{ state_info['recovered'] }}</td>
       		{% else %}
-      			<td class="push">Info Unavailable</td>
+      			<td class="push" id="recover">Info Unavailable</td>
       		{% endif %}
       	</tr>
       	<tr>
-      		<td>Deaths</td>
-      		<td class="push">{{ state_info['death'] }}</td>
+      		<td id="death">Deaths</td>
+      		<td class="push" id="death">{{ state_info['death'] }}</td>
       	</tr>
+        <tr><td>    </td>    <td></td></tr>
+        <tr>
+          <td id="infected">Percent Infected</td>
+          <td class="push" id="infected">{{percent}}</td>
+        </tr>
       </table><br><br><br>
     </div>
     <div class="col-sm-4"></div>

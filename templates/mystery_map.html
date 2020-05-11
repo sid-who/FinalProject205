@@ -1,4 +1,15 @@
 {% extends 'bootstrap/base.html' %}
+
+<!--#-->
+<!-- Code by Gurpreet Sidhu, Jose Perez, Cesar Borrego, and Justin Thon -->
+<!-- File name: mystery_map.html -->
+<!-- Final Project -->
+<!-- Date Created: 5/9/20 -->
+<!-- HTML file -->
+<!-- CST 205 - Multimedia Design & Programming -->
+<!-- Purpose: HTML Template for displaying rona tracker map with corresponding data  -->
+<!--#-->
+
 <!DOCTYPE html>
 <html>
 {% block content %}
@@ -19,7 +30,7 @@
   <p> "{{ imgLink[i] }}" </p>
 {% endfor %} -->
 <h1 style="text-align: center; color: white;">The R0na Tracker</h1>
-<body style="background-color:gray">
+<body style="background-color:#0f191c">
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <br><br><br><br>
   <center>
@@ -38,12 +49,6 @@
     {% endfor %}
     </defs>
 
-    <!-- <pattern id="{{ i }}" patternUnits="userSpaceOnUse" width="100" height="100">
-        <image xlink:href="{{ imgLink[i] }}" width="100" height="100" />
-      </pattern> -->
-
-
-
     <g transform="translate(-32)">
 
     <g class="state">
@@ -60,14 +65,6 @@
     {% for border in borders %}
         <path class="{{ border['id'] }}" fill="{{ colors[border['id']] }}" d="{{ border['coords'] }}"/>
     {% endfor %}
-
-
-
-
-
-    <!-- <circle class="state borders DCcircle" id="DC" cx="858.5" cy="257.9" r="5">
-      <title>District of Columbia</title>
-    </circle> -->
 
     <path class="separator" fill="none" d="m 0,440 205,0 220,105 0,65 m -150,-136.59 0,61.59 80,75"/>
 

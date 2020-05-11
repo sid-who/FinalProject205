@@ -1,3 +1,14 @@
+<!--#-->
+<!-- Code by Gurpreet Sidhu, Jose Perez, Cesar Borrego, and Justin Thon -->
+<!-- File name: home.html -->
+<!-- Final Project -->
+<!-- Date Created: 5/9/20 -->
+<!-- HTML file -->
+<!-- CST 205 - Multimedia Design & Programming -->
+<!-- Purpose: HTML Template for displaying rona tracker map with corresponding data  -->
+<!--#-->
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -80,12 +91,15 @@
     .tblText{
       font-size: 10px;
     }
+    .push{
+    padding-left: 50px;
+  }
   </style>
     <table>
       {% for i in sorted_population %}
       <tr>
           <td id="popColor" class="tblText">{{ i }}</td>
-          <td id="popColor" class="tblText">{{ sorted_population[i] }}</td>
+          <td id="popColor" class="tblText push">{{ sorted_population[i] }}</td>
       </tr>
       {% endfor %}
     </table>

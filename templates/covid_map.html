@@ -1,3 +1,13 @@
+<!--#-->
+<!-- Code by Gurpreet Sidhu, Jose Perez, Cesar Borrego, and Justin Thon -->
+<!-- File name: covid_map.html -->
+<!-- Final Project -->
+<!-- Date Created: 5/9/20 -->
+<!-- HTML file -->
+<!-- CST 205 - Multimedia Design & Programming -->
+<!-- Purpose: HTML Template for displaying rona tracker map with corresponding data  -->
+<!--#-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,7 +71,7 @@
     </svg>
 		<style>
     table{
-      text-align: cetner;
+      text-align: center;
       color: white;
       margin: auto;
       float: right;
@@ -71,17 +81,20 @@
 
     #popColor{
       border: 2px, solid, white;
-      color: #6edb98;
+      color: #e85f5f;
     }
     .tblText{
       font-size: 10px;
     }
+    .push{
+    padding-left: 50px;
+  }
   </style>
     <table id="popColor">
       {% for i in sorted_population %}
       <tr>
           <td id="popColor" class="tblText">{{ i }}</td>
-          <td id="popColor" class="tblText">{{ sorted_population[i] }}</td>
+          <td id="popColor" class="tblText push">{{ sorted_population[i] }}</td>
       </tr>
       {% endfor %}
     </table>

@@ -1,3 +1,19 @@
+#
+# Code by Gurpreet Sidhu, Jose Perez, Cesar Borrego, and Justin Thon
+# File name: project_main.py
+# Date Created: 5/9/20
+# Python version 3.7
+# CST 205 - Multimedia Design & Programming
+# Purpose: Flask application which is dependent several modules performing api calls. This
+#          application displays several renderings of an svg map with fills according to 
+#          population, covid-case, recovery, and death density. This occurs at a state 
+#          level, Flask and jinja are used to create dynamic routes to each state on each page.
+#          At the state level, smaller details are displayed. A meme can be selected from the
+#          the gallery and it will be applied to that state on the '???' tab
+#
+
+
+
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from PIL import Image
@@ -15,23 +31,10 @@ from imflip import memes_list
 import colorsys
 import sys
 import matplotlib
-# import matplotlib.pyplot as plt
-# import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 
 matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
-
-
-
-
-def get_color_spread(N):
-    HSV_tuples = [(x * 3.0 / N, 0.5, 0.5) for x in range(N)]
-    hex_out = []
-    for rgb in HSV_tuples:
-        rgb = map(lambda x: int(x * 255), colorsys.hsv_to_rgb(*rgb))
-        hex_out.append('#%02x%02x%02x' % tuple(rgb))
-    return hex_out
 
 states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
           'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
@@ -71,7 +74,6 @@ states_pop_names_sorted = []
 
 for value in sortPop:
     states_pop_names_sorted.append(value)
-#print(states_pop_names_sorted)
 
 colorgrade = linear_gradient((207,245,199), (2,77,5), 55)
 
@@ -103,8 +105,6 @@ color_cases = {}
 
 for state, color in zip(state_case_names, colorCase):
     color_cases[state] = color
-
-#print(state_case_names)
 
 color_cases['borders'] = 'none'
 
@@ -185,8 +185,6 @@ def generatePlot(this_state_name, cases, recovered, deaths):
     plt.title('State Statistics')
 
     plt.savefig("./static/images/" + this_state_name +".png")
-    # plt.savefig("./static/images/plot.png")
-    #plt.show()
 
 ## End Math Plot Lib
 ## ------------------------------------------------------------------------------------- ##
@@ -196,76 +194,7 @@ img_links = {}
 for state in states_names:
     img_links[state] = ''
 
-#print(img_links)
-
-o30orMore = []
-o25to30 = []
-o20to25 = []
-o15to20 = []
-o10to15 = []
-o5to10 = []
-
-pdict = {
-    "o30orMore" : [],
-    "o25to30" : [],
-    "o20to25" : [],
-    "o15to20" : [],
-    "o10to15" : [],
-    "o5to10" : [],
-    "o1to5" : [],
-    "o900to1" : [],
-    "o800to900" : [],
-    "o700to800" : [],
-    "o600to700" : [],
-    "o500to600" : [],
-    "under500" : []
-}
-
 color_dictionary['borders'] = 'none'
-
-
-for state in population:
-    if(population[state] > 5000000):
-        if(population[state] > 30000000):
-            #o30orMore.append(population[state])
-            pdict['o30orMore'].append(state)
-        elif(population[state] > 25000000 and population[state] < 30000000):
-            # o25to30.append(population[state])
-            pdict['o25to30'].append(state)
-        elif(population[state] > 20000000 and population[state] < 25000000):
-            # o20to25.append(population[state])
-            pdict['o20to25'].append(state)
-        elif(population[state] > 15000000 and population[state] < 20000000):
-            # o15to20.append(population[state])
-            pdict['o15to20'].append(state)
-        elif(population[state] > 10000000 and population[state] < 15000000):
-            # o10to15.append(population[state])
-            pdict['o10to15'].append(state)
-        elif(population[state] > 5000000 and population[state] < 10000000):
-            # o5to10.append(population[state])
-            pdict['o5to10'].append(state)
-        #over.append(population[state])
-    else:
-        #under.append(population[state])
-        #o5to10.append(state)
-        if(population[state] > 1000000 and population[state] < 5000000):
-            pdict['o1to5'].append(state)
-        elif(population[state] > 900000 and population[state] < 1000000):
-            pdict['o900to1'].append(state)
-        elif(population[state] > 800000 and population[state] < 900000):
-            pdict['o800to900'].append(state)
-        elif(population[state] > 700000 and population[state] < 800000):
-            pdict['o700to800'].append(state)
-        elif(population[state] > 600000 and population[state] < 700000):
-            pdict['o600to700'].append(state)
-        elif(population[state] > 500000 and population[state] < 600000):
-            pdict['o500to600'].append(state)
-        else:
-            pdict['under500'].append(state)
-# for state in pdict:
-#     print(state + " -> " + str(len(pdict[state])))
-
-#print(pdict)
 
 app = Flask(__name__)
 app.secret_key = 'orthanc'
@@ -273,21 +202,20 @@ bootstrap = Bootstrap(app)
 
 @app.route('/')
 def home():
-    #print(population)
-    #print(borders)
         return render_template('home.html', title = "The R0na Tracker", states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = sortPop)
 
 @app.route('/states/<state_id>')
 def states_detail(state_id):
-    #temp = color_dictionary['state_id']
-    #print(DetailedCovidData[abbr[state_id]])
-
     local_dictionary = {'id' : state_id, 'population' : population[state_id], 'recovered' : DetailedCovidData[abbr[state_id]]['recovered'], 'death' : DetailedCovidData[abbr[state_id]]['death'], 'casesReported' : parsed_covid_data[state_id]['casesReported']}
 
 
     generatePlot(state_id, local_dictionary['casesReported'], modRecoveries[abbr[state_id]], local_dictionary['death'])
 
-    return render_template('states_detail.html', state_info = local_dictionary, memes = memes_list)
+    percent_infected = (parsed_covid_data[state_id]['casesReported']/population[state_id])
+
+    percentage = "{:.001%}".format(percent_infected)
+
+    return render_template('states_detail.html', state_info = local_dictionary, memes = memes_list, percent = percentage)
 
 @app.route('/covid_cases')
 def covid_map():
@@ -295,11 +223,11 @@ def covid_map():
 
 @app.route('/recoveries')
 def recoveries():
-    return render_template('recovery_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_recovered, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modRecoveries)
+    return render_template('recovery_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_recovered, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modRecoveries, abbreviations = abbr)
 
 @app.route('/deaths')
 def deaths():
-    return render_template('death_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_deaths, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modDeath)
+    return render_template('death_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_deaths, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modDeath, abbreviations = abbr)
 
 @app.route('/mysterymap')
 def mysteries():
@@ -308,9 +236,6 @@ def mysteries():
 
 @app.route('/mysterymapUpdate/<img_id>/<state_name_detail>')
 def update(img_id, state_name_detail):
-    print(img_id)
-    print(state_name_detail)
-
     img_links[abbr[state_name_detail]] = meme_dictionary[img_id]['url']
 
     return mysteries()
