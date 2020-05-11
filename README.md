@@ -64,48 +64,73 @@ Alternatively, it can run via debug mode
 python3 project_main.py
 ```
 
-### Break down into end to end tests
+### Coding style tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
+Our App intended to color code States according to the number of infected people. The Darker the color, the more infected people the State has. This at first was hard coded, which was good, but not as effective as we wanted. This was later replaced by a dictionary of colors, they are dynamically allocated and work with the density of the Population and density of COVID-19 cases.
 
 ```
-Give an example
+## Case Sort - The following through "## End Cases"
+## is used to sort our received dictionary from the API and arrange
+## it according to ascending population information. Our gradient function
+## is called and a color range is generated, the keys are then read into a
+## new dictionary which is created by iterating through two lists. One being
+## the state names arranged in the order the states appear in the dictionary,
+## the other being the color gradient. zip() is used to accomplish this, and
+## our new dictionary is built.
+modCases = {}
+for i in parsed_covid_data:
+    modCases[i] = parsed_covid_data[i]['casesReported']
+state_case_names = []
+colorCase = linear_gradient((250,197,197), (101,2,2), 60)
+
+#modCases.pop('Jurisdiction')
+## The above may need to be commented in, depending on the updates to the API
+
+modCases = {k: v for k, v in sorted(modCases.items(), key=lambda x: x[1])}
+
+for value in modCases:
+    state_case_names.append(value)
+
+color_cases = {}
+
+for state, color in zip(state_case_names, colorCase):
+    color_cases[state] = color
+
+color_cases['borders'] = 'none'
 ```
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Local Flask application
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+* [Bootstrap](https://getbootstrap.com/)
+* [Python](https://www.python.org/)
+* [matplotlib](https://matplotlib.org/)
 
 
 ## Authors
 
-Gurpreet Sidhu
-Jose Perez
-Cesar Borrego
+Gurpreet Sidhu,
+Jose Perez,
+Cesar Borrego,
 Justin Thon
 https://github.com/sid-who/FinalProject205
 
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* [Color Gradients Tutorial](https://bsou.io/posts/color-gradients-with-python)
+
+* [Covid-19 Cases API](https://api.apify.com/v2/key-value-stores/moxA3Q0aZh5LosewB/records/LATEST?disableRedirect=true)
+
+
+* [Population API](https://datausa.io/api/data?drilldowns=State&measures=Population&year=latest)
+
+
+* [ImgFlip API (Top 100)](https://api.imgflip.com/get_memes)
+
+
+* [Covid Tracking API](https://covidtracking.com/api/states)
