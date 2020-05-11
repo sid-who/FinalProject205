@@ -5,8 +5,8 @@
 # Python version 3.7
 # CST 205 - Multimedia Design & Programming
 # Purpose: Flask application which is dependent several modules performing api calls. This
-#          application displays several renderings of an svg map with fills according to 
-#          population, covid-case, recovery, and death density. This occurs at a state 
+#          application displays several renderings of an svg map with fills according to
+#          population, covid-case, recovery, and death density. This occurs at a state
 #          level, Flask and jinja are used to create dynamic routes to each state on each page.
 #          At the state level, smaller details are displayed. A meme can be selected from the
 #          the gallery and it will be applied to that state on the '???' tab
@@ -43,8 +43,10 @@ states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
           'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
 
-## ------------------ color maker for all maps ----------------##
-
+## Linear Gradient Calculation Function. This is a modified function pulled from a tutorial
+## The folowing changes were made to the code in order to support tuple conversion to RGB
+## using local methods instead of copied functions. The source code (unmodified)
+## can be found @: https://bsou.io/posts/color-gradients-with-python
 def linear_gradient(start_tuple, end_tuple, n):
     RGB_List = [start_tuple]
 
@@ -65,10 +67,15 @@ def linear_gradient(start_tuple, end_tuple, n):
         converted_color = '#%02x%02x%02x' % color
         hex_list.append(converted_color)
     return hex_list
-## ------------------- end color maker --------------------------##
 
-
-## Population
+## Population Sort - The following through "## End Population"
+## is used to sort our received dictionary from the API and arrange
+## it according to ascending population information. Our gradient function
+## is called and a color range is generated, the keys are then read into a
+## new dictionary which is created by iterating through two lists. One being
+## the state names arranged in the order the states appear in the dictionary,
+## the other being the color gradient. zip() is used to accomplish this, and
+## our new dictionary is built.
 sortPop = {k: v for k, v in sorted(population.items(), key=lambda x: x[1])}
 states_pop_names_sorted = []
 
@@ -85,9 +92,14 @@ for state, color in zip(states_pop_names_sorted, colorgrade):
 color_dictionary = color_pop
 ## End Population
 
-## ------------------------------------------------------------------------------------- ##
-
-## Cases
+## Case Sort - The following through "## End Cases"
+## is used to sort our received dictionary from the API and arrange
+## it according to ascending population information. Our gradient function
+## is called and a color range is generated, the keys are then read into a
+## new dictionary which is created by iterating through two lists. One being
+## the state names arranged in the order the states appear in the dictionary,
+## the other being the color gradient. zip() is used to accomplish this, and
+## our new dictionary is built.
 modCases = {}
 for i in parsed_covid_data:
     modCases[i] = parsed_covid_data[i]['casesReported']
@@ -95,6 +107,7 @@ state_case_names = []
 colorCase = linear_gradient((250,197,197), (101,2,2), 60)
 
 #modCases.pop('Jurisdiction')
+## The above may need to be commented in, depending on the updates to the API
 
 modCases = {k: v for k, v in sorted(modCases.items(), key=lambda x: x[1])}
 
@@ -107,12 +120,16 @@ for state, color in zip(state_case_names, colorCase):
     color_cases[state] = color
 
 color_cases['borders'] = 'none'
-
 ## End Cases
 
-## ------------------------------------------------------------------------------------- ##
-
-## Recovered
+## Recovery Sort - The following through "## End Recovered"
+## is used to sort our received dictionary from the API and arrange
+## it according to ascending population information. Our gradient function
+## is called and a color range is generated, the keys are then read into a
+## new dictionary which is created by iterating through two lists. One being
+## the state names arranged in the order the states appear in the dictionary,
+## the other being the color gradient. zip() is used to accomplish this, and
+## our new dictionary is built.
 modRecoveries = {}
 for i in DetailedCovidData:
     modRecoveries[i] = DetailedCovidData[i]['recovered']
@@ -140,9 +157,14 @@ for state, color in zip(recv_state_names, colorRec):
 color_recovered['borders'] = 'none'
 ## End Recovered
 
-## ------------------------------------------------------------------------------------- ##
-
-## Deaths
+## Death Sort - The following through "## End Death"
+## is used to sort our received dictionary from the API and arrange
+## it according to ascending population information. Our gradient function
+## is called and a color range is generated, the keys are then read into a
+## new dictionary which is created by iterating through two lists. One being
+## the state names arranged in the order the states appear in the dictionary,
+## the other being the color gradient. zip() is used to accomplish this, and
+## our new dictionary is built.
 modDeath = {}
 for i in DetailedCovidData:
     modDeath[i] = DetailedCovidData[i]['death']
@@ -165,13 +187,12 @@ color_deaths['borders'] = 'none'
 mystery_color = {}
 mystery_color['borders'] = 'none'
 
-#print(color_deaths)
-
 ## End Deaths
 
-## ------------------------------------------------------------------------------------- ##
-## Math Plot Lib Generator
-
+## Math Plot Lib Generator - "## End Math Plot Lib"
+## Dynammically generates a bar graph by leveraging mathplotlib
+## and its built in plot generator. The plot is saved as an image
+## in the static assets folder for use on the state_details route.
 def generatePlot(this_state_name, cases, recovered, deaths):
     objects = ('cases', 'recovered', 'deaths')
     y_pos = np.arange(len(objects))
@@ -185,12 +206,14 @@ def generatePlot(this_state_name, cases, recovered, deaths):
     plt.title('State Statistics')
 
     plt.savefig("./static/images/" + this_state_name +".png")
-
 ## End Math Plot Lib
-## ------------------------------------------------------------------------------------- ##
 
+## Empty dictionary to store links to the images selected by the user
+## on a specific state.
 img_links = {}
 
+## Adds the states required to the empty dictionary above
+## while also setting the value for each to null on initialization. 
 for state in states_names:
     img_links[state] = ''
 
@@ -200,10 +223,13 @@ app = Flask(__name__)
 app.secret_key = 'orthanc'
 bootstrap = Bootstrap(app)
 
+
+#Route for the main Page, displaying a map with a table to the side showing cases per state. Color coded comes from a dictipnary of colors, it dynamically allocated. The Darker the color, the higher the density.
 @app.route('/')
 def home():
         return render_template('home.html', title = "The R0na Tracker", states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = sortPop)
 
+#Displays each state stats, while it also shows a graph of with the stats giving percentages.
 @app.route('/states/<state_id>')
 def states_detail(state_id):
     local_dictionary = {'id' : state_id, 'population' : population[state_id], 'recovered' : DetailedCovidData[abbr[state_id]]['recovered'], 'death' : DetailedCovidData[abbr[state_id]]['death'], 'casesReported' : parsed_covid_data[state_id]['casesReported']}
@@ -217,6 +243,7 @@ def states_detail(state_id):
 
     return render_template('states_detail.html', state_info = local_dictionary, memes = memes_list, percent = percentage)
 
+#Displays a color coded map with the number of cases, the darker the color, the moree csses that each state has. Covid APIs were used in the making of the map. with a Dictionary of colors dynamically allocated.
 @app.route('/covid_cases')
 def covid_map():
     return render_template('covid_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_cases, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modCases)
@@ -225,15 +252,20 @@ def covid_map():
 def recoveries():
     return render_template('recovery_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_recovered, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modRecoveries, abbreviations = abbr)
 
+#Dsiplays the number of deaths per state and it shows how many people and on clicking the state you can see specifics for each state.
 @app.route('/deaths')
 def deaths():
     return render_template('death_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_deaths, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modDeath, abbreviations = abbr)
 
+# Mystery map allows you to add a meme image instead of a color coded. click a state and  you will get prompet to an array of memes from Image flip api
+#It also displays the name of the state and all the stats such as deaths, recovered and infected.
 @app.route('/mysterymap')
 def mysteries():
     print(img_links)
     return render_template('mystery_map.html', title = "The R0na Tracker", imgLink = img_links, states = states_coordinates, colors = mystery_color, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = sortPop)
 
+#Mystery map update that allows you to add a meme image instead of a color coded. Mainly meant for fun
+#after setting up the image takes tyou back to the /mystery map witht eh image updated. Images come from Image flip API
 @app.route('/mysterymapUpdate/<img_id>/<state_name_detail>')
 def update(img_id, state_name_detail):
     img_links[abbr[state_name_detail]] = meme_dictionary[img_id]['url']
