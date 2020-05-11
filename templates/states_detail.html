@@ -17,33 +17,73 @@
       </div>
     </nav>
   </head>
-  <body>
-    <h1>{{ state_info['id'] }}</h1>
-    <table>
-    	<tr>
-    		<td>Population</td>
-    		<td>{{ state_info['population'] }}</td>
-    	</tr>
-    	<tr>
-    		<td>Cases Reported</td>
-    		<td>{{ state_info['casesReported'] }}</td>
-    	</tr>
-    	<tr>
-    		<td>Recovered</td>
-    		{% if state_info['recovered'] != None %}
-    			<td>{{ state_info['recovered'] }}</td>
-    		{% else %}
-    			<td>Info Unavailable</td>
-    		{% endif %}
-    	</tr>
-    	<tr>
-    		<td>Deaths</td>
-    		<td>{{ state_info['death'] }}</td>
-    	</tr>
-    </table>
-    {% for i in memes %}
-    	<a href="{{ url_for('update', img_id = i['id'], state_name_detail = state_info['id']) }}"><img src="{{ i['url'] }}" width="100" height="100" alt="error"></a>
-    {% endfor %}
+  <body style="background-color: black; color: white;">
+    <h1 style="text-align: center;">The R0na Tracker</h1>
+
+    <h1 style="text-align: center;">{{ state_info['id'] }}</h1><br><br>
+<style>
+  /* table{
+    border: solid, 2px, white;
+    color: white;
+    padding-left: 300px;
+
+  } */
+
+  .dataTable{
+    padding-left: 300px;
+  }
+
+
+  .meme_container{
+    width:500px;
+    text-align: center;
+  }
+
+  .push{
+    padding-left: 50px;
+  }
+</style>
+<div class="push">
+ <div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4"><img class="img-rounded img-responsive" src="{{url_for('static', filename='images/' + state_info['id'] + '.png') }}" /></div>
+    <div class="col-sm-4">
+      <table>
+      	<tr >
+      		<td>Population</td>
+      		<td class="push">{{ state_info['population'] }}</td>
+      	</tr>
+      	<tr>
+      		<td>Cases Reported</td>
+      		<td class="push">{{ state_info['casesReported'] }}</td>
+      	</tr>
+      	<tr>
+      		<td>Recovered</td>
+      		{% if state_info['recovered'] != None %}
+      			<td class="push">{{ state_info['recovered'] }}</td>
+      		{% else %}
+      			<td class="push">Info Unavailable</td>
+      		{% endif %}
+      	</tr>
+      	<tr>
+      		<td>Deaths</td>
+      		<td class="push">{{ state_info['death'] }}</td>
+      	</tr>
+      </table><br><br><br>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+<br><nr>
+<div class="push">
+  <div class="row">
+    <div class="col-sm-12">
+      {% for i in memes %}
+      	<a href="{{ url_for('update', img_id = i['id'], state_name_detail = state_info['id']) }}"><img src="{{ i['url'] }}" width="100" height="100" alt="error"></a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
 
 
   </body>

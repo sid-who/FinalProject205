@@ -3,7 +3,7 @@
 <html>
 {% block content %}
 <head>
-	<title></title>
+	<title>{{title}}</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <nav>
       <div class="topnav">
@@ -18,7 +18,8 @@
 <!-- {% for i in imgLink %}
   <p> "{{ imgLink[i] }}" </p>
 {% endfor %} -->
-<body style="background-color:#000000">
+<h1 style="text-align: center; color: white;">The R0na Tracker</h1>
+<body style="background-color:gray">
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <br><br><br><br>
   <center>
@@ -51,7 +52,7 @@
       {% endfor %}
 
       {% for istate in irregstates %}
-        <a href="{{ url_for('states_detail', state_id = statesNames[istate['id']]) }}"> <path id="{{ istate['id'] }}" fill="{{ colors[istate['id']] }}" transform=" {{ istate['transform'] }}" d="{{ istate['coords'] }}"> </a>
+        <a href="{{ url_for('states_detail', state_id = statesNames[istate['id']]) }}"> <path id="{{ istate['id'] }}" fill="url(#{{istate['id']}})" transform=" {{ istate['transform'] }}" d="{{ istate['coords'] }}"> </a>
       {% endfor %}
 
     </g>

@@ -14,6 +14,15 @@ from imflip import meme_dictionary
 from imflip import memes_list
 import colorsys
 import sys
+import matplotlib
+# import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt; plt.rcdefaults()
+import numpy as np
+
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
+
+
 
 
 def get_color_spread(N):
@@ -141,7 +150,7 @@ for i in DetailedCovidData:
 modDeath = {k: v for k, v in sorted(modDeath.items(), key=lambda x: x[1])}
 
 death_state_names = []
-colorDeath = linear_gradient((247, 152, 227), (147, 2, 116), 60)
+colorDeath = linear_gradient((235, 199, 237), (147, 2, 116), 60)
 
 for value in modDeath:
     death_state_names.append(value)
@@ -160,6 +169,26 @@ mystery_color['borders'] = 'none'
 
 ## End Deaths
 
+## ------------------------------------------------------------------------------------- ##
+## Math Plot Lib Generator
+
+def generatePlot(this_state_name, cases, recovered, deaths):
+    objects = ('cases', 'recovered', 'deaths')
+    y_pos = np.arange(len(objects))
+    vals = [cases, recovered, deaths]
+
+    plt.clf()
+
+    plt.bar(y_pos, vals, align='center', alpha=0.5)
+    plt.xticks(y_pos, objects)
+    plt.ylabel('Persons')
+    plt.title('State Statistics')
+
+    plt.savefig("./static/images/" + this_state_name +".png")
+    # plt.savefig("./static/images/plot.png")
+    #plt.show()
+
+## End Math Plot Lib
 ## ------------------------------------------------------------------------------------- ##
 
 img_links = {}
@@ -246,7 +275,7 @@ bootstrap = Bootstrap(app)
 def home():
     #print(population)
     #print(borders)
-    return render_template('home.html', title = "The R0na Tracker", states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders, irregstates = irregular_states)
+        return render_template('home.html', title = "The R0na Tracker", states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = sortPop)
 
 @app.route('/states/<state_id>')
 def states_detail(state_id):
@@ -255,28 +284,27 @@ def states_detail(state_id):
 
     local_dictionary = {'id' : state_id, 'population' : population[state_id], 'recovered' : DetailedCovidData[abbr[state_id]]['recovered'], 'death' : DetailedCovidData[abbr[state_id]]['death'], 'casesReported' : parsed_covid_data[state_id]['casesReported']}
 
-    #print(local_dictionary)
 
-
+    generatePlot(state_id, local_dictionary['casesReported'], modRecoveries[abbr[state_id]], local_dictionary['death'])
 
     return render_template('states_detail.html', state_info = local_dictionary, memes = memes_list)
 
 @app.route('/covid_cases')
 def covid_map():
-    return render_template('covid_map.html', states = states_coordinates, colors = color_cases, statesNames = states_names, borders = borders, irregstates = irregular_states)
+    return render_template('covid_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_cases, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modCases)
 
 @app.route('/recoveries')
 def recoveries():
-    return render_template('recovery_map.html', states = states_coordinates, colors = color_recovered, statesNames = states_names, borders = borders, irregstates = irregular_states)
+    return render_template('recovery_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_recovered, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modRecoveries)
 
 @app.route('/deaths')
 def deaths():
-    return render_template('death_map.html', states = states_coordinates, colors = color_deaths, statesNames = states_names, borders = borders, irregstates = irregular_states)
+    return render_template('death_map.html', title = "The R0na Tracker", states = states_coordinates, colors = color_deaths, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = modDeath)
 
 @app.route('/mysterymap')
 def mysteries():
     print(img_links)
-    return render_template('mystery_map.html', imgLink = img_links, states = states_coordinates, colors = mystery_color, statesNames = states_names, borders = borders, irregstates = irregular_states)
+    return render_template('mystery_map.html', title = "The R0na Tracker", imgLink = img_links, states = states_coordinates, colors = mystery_color, statesNames = states_names, borders = borders, irregstates = irregular_states, sorted_population = sortPop)
 
 @app.route('/mysterymapUpdate/<img_id>/<state_name_detail>')
 def update(img_id, state_name_detail):

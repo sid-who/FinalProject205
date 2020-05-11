@@ -17,7 +17,8 @@
     </nav>
   </head>
   <body style="background-color:#000000">
-    <div class="wrapper">
+    <div class="wrapper1">
+      <h1 id="popColor" style= "text-align: center;"> The R0na Tracker</h1>
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <br><br><br><br>
   <center>
@@ -62,7 +63,34 @@
 
     </g>
     </svg>
+    <style>
+    table{
+      text-align: center;
+      color: white;
+      margin: auto;
+      float: right;
+      padding-right: 100px;
+      padding-left: 50px;
+    }
+
+    #popColor{
+      border: 2px, solid, white;
+      color: #6edb98;
+    }
+    .tblText{
+      font-size: 10px;
+    }
+  </style>
+    <table>
+      {% for i in sorted_population %}
+      <tr>
+          <td id="popColor" class="tblText">{{ i }}</td>
+          <td id="popColor" class="tblText">{{ sorted_population[i] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
 </center>
+
 </div>
   </body>
 </html>

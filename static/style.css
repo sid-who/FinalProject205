@@ -23,6 +23,27 @@
 
 /* Add a color to the active/current link */
 .topnav a.active {
-  background-color: #4CAF50;
+  background-color: #dddddd;
+  color: black;
+}
+body{
+  background-color: black;
+}
+
+.wrapper{
+  background-color: black;
+  width: 1400 px;
+  margin: auto;
+}
+
+table{
+  text-align: cetner;
   color: white;
+  margin: auto;
+}
+
+#popColor{
+  border: 2px, solid, white;
+  color: #FFFFFF;
+
 }
