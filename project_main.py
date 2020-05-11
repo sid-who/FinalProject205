@@ -10,7 +10,10 @@ from detailed_covid import DetailedCovidData
 from borders import borders
 from numpy import random as rnd
 from state_to_abbrv import abbr
+from imflip import meme_dictionary
+from imflip import memes_list
 import colorsys
+import sys
 
 
 def get_color_spread(N):
@@ -150,11 +153,21 @@ for state, color in zip(death_state_names, colorDeath):
 
 color_deaths['borders'] = 'none'
 
+mystery_color = {}
+mystery_color['borders'] = 'none'
+
 #print(color_deaths)
 
 ## End Deaths
 
 ## ------------------------------------------------------------------------------------- ##
+
+img_links = {}
+
+for state in states_names:
+    img_links[state] = ''
+
+#print(img_links)
 
 o30orMore = []
 o25to30 = []
@@ -233,7 +246,6 @@ bootstrap = Bootstrap(app)
 def home():
     #print(population)
     #print(borders)
-    1
     return render_template('home.html', title = "The R0na Tracker", states = states_coordinates, colors = color_dictionary, statesNames = states_names, borders = borders, irregstates = irregular_states)
 
 @app.route('/states/<state_id>')
@@ -243,11 +255,11 @@ def states_detail(state_id):
 
     local_dictionary = {'id' : state_id, 'population' : population[state_id], 'recovered' : DetailedCovidData[abbr[state_id]]['recovered'], 'death' : DetailedCovidData[abbr[state_id]]['death'], 'casesReported' : parsed_covid_data[state_id]['casesReported']}
 
-    print(local_dictionary)
+    #print(local_dictionary)
 
 
 
-    return render_template('states_detail.html', state_info = local_dictionary)
+    return render_template('states_detail.html', state_info = local_dictionary, memes = memes_list)
 
 @app.route('/covid_cases')
 def covid_map():
@@ -263,7 +275,18 @@ def deaths():
 
 @app.route('/mysterymap')
 def mysteries():
-    return render_template('mystery_map.html')
+    print(img_links)
+    return render_template('mystery_map.html', imgLink = img_links, states = states_coordinates, colors = mystery_color, statesNames = states_names, borders = borders, irregstates = irregular_states)
+
+@app.route('/mysterymapUpdate/<img_id>/<state_name_detail>')
+def update(img_id, state_name_detail):
+    print(img_id)
+    print(state_name_detail)
+
+    img_links[abbr[state_name_detail]] = meme_dictionary[img_id]['url']
+
+    return mysteries()
+
 
 
 if __name__ == '__main__':

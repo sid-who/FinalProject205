@@ -20,8 +20,9 @@ memes_list = meme_images['data']['memes']
 meme_dictionary = {}
 
 for i in range(len(memes_list)):
-	id = memes_list[i]['id']
-	
-	meme_dictionary[id] = {}
+	mid = memes_list[i]['id']
+	url = memes_list[i]['url']
+	name = memes_list[i]['name']
+	meme_dictionary[mid] = {'url' : url, 'name' : name}
 
-print(meme_dictionary)
+#print(memes_list)

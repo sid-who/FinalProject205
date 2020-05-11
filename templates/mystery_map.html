@@ -1,5 +1,7 @@
+{% extends 'bootstrap/base.html' %}
 <!DOCTYPE html>
 <html>
+{% block content %}
 <head>
 	<title></title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -13,7 +15,61 @@
       </div>
     </nav>
 </head>
-<body>
+<!-- {% for i in imgLink %}
+  <p> "{{ imgLink[i] }}" </p>
+{% endfor %} -->
+<body style="background-color:#000000">
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <br><br><br><br>
+  <center>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="958" height="602">
+      <title></title>
+    <defs>
+    <style type="text/css">
+    .borders {stroke:#FFFFFF; stroke-width:1}
+    .DCcircle {opacity:1}
+    .separator {stroke:#B0B0B0; stroke-width:2}
+    </style>
+    {% for i in imgLink %}
+      <pattern id="{{ i }}" patternUnits="userSpaceOnUse" width="100" height="100">
+        <image xlink:href="{{ imgLink[i] }}" width="100" height="100" />
+      </pattern>
+    {% endfor %}
+    </defs>
 
-</body>
+
+
+    <g transform="translate(-32)">
+
+    <g class="state">
+      {% for state in states %}
+        <a href="{{ url_for('states_detail', state_id = statesNames[state['id']]) }}"> <path id="{{state['id']}}" fill="url(#{{state['id']}})" d="{{ state['coords'] }}"></a>
+      {% endfor %}
+
+      {% for istate in irregstates %}
+        <a href="{{ url_for('states_detail', state_id = statesNames[istate['id']]) }}"> <path id="{{ istate['id'] }}" fill="{{ colors[istate['id']] }}" transform=" {{ istate['transform'] }}" d="{{ istate['coords'] }}"> </a>
+      {% endfor %}
+
+    </g>
+
+    {% for border in borders %}
+        <path class="{{ border['id'] }}" fill="{{ colors[border['id']] }}" d="{{ border['coords'] }}"/>
+    {% endfor %}
+
+
+
+
+
+    <!-- <circle class="state borders DCcircle" id="DC" cx="858.5" cy="257.9" r="5">
+      <title>District of Columbia</title>
+    </circle> -->
+
+    <path class="separator" fill="none" d="m 0,440 205,0 220,105 0,65 m -150,-136.59 0,61.59 80,75"/>
+
+    </g>
+    </svg>
+</center>
+
+  </body>
+{% endblock %}
 </html>

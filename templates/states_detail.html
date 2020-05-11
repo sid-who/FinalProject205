@@ -1,5 +1,8 @@
+{% extends 'bootstrap/base.html' %}
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+{% block content %}
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -38,5 +41,11 @@
     		<td>{{ state_info['death'] }}</td>
     	</tr>
     </table>
+    {% for i in memes %}
+    	<a href="{{ url_for('update', img_id = i['id'], state_name_detail = state_info['id']) }}"><img src="{{ i['url'] }}" width="100" height="100" alt="error"></a>
+    {% endfor %}
+
+
   </body>
+ {% endblock %}
 </html>
